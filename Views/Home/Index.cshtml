@@ -1,0 +1,267 @@
+﻿@{
+    ViewBag.Title = "Welcome to the Tampa Premier League Website";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="2000">
+    <div class="carousel-inner">
+        <div class="carousel-item active" style="background-image: url('/Images/Slide1.jpeg');">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Organizing Committee</h5>
+                <p>Tampa Premier League</p>
+            </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/Images/Slide2.jpeg');">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Winners of </h5>
+                <p>TPL TItan Cup X</p>
+            </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/Images/Slide3.jpeg');">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>
+                    Winners of<h5>
+                        <p>TPL Tennis Ball Spring 2024 Series </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main role="main" class="container main">
+    <h1>Tampa Premier League</h1>
+    <p>This website is a preliminary model developed to showcase the Tampa Premier League..</p>
+    <div class="gallery row">
+        <div class="col-md-4">
+            <a href="https://www.youtube.com/results?search_query=rocky+patel+cricket" target="_blank">
+                <img src="~/Images/Hi1.png" alt="Gallery Image 1">
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="https://cricclubs.com/TampaCricket/battingRecords.do?clubId=1507" target="_blank">
+                <img src="~/Images/stats.png" alt="Gallery Image 2">
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="https://cricclubs.com/TampaCricket/fixtures.do?clubId=1507" target="_blank">
+                <img src="~/Images/fix.jpeg" alt="Gallery Image 3">
+            </a>
+        </div>
+    </div>
+
+    <div class="upcoming-matches container main" style="margin-top: 20px;">
+        <h2>Upcoming Matches</h2>
+        <br />
+        <div class="row">
+            @foreach (var match in Model)
+            {
+                <div class="col-md-3">
+                    <div class="match-card" style="background: #006cb7; color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h5>MATCH @match.MatchId - @match.TeamOne vs @match.TeamTwo</h5>
+                        <p>@match.MatchTime.ToString("MMMM dd, yyyy HH:mm")</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <style>
+          .container1 {
+              display: flex;
+          }
+          .box {
+              width: 50%;
+              padding: 10px;
+
+          }
+          .response-container {
+            position: relative;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .delete-response {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: none;
+            background-color: red;
+            color: white;
+            border-radius: 0 5px;
+            cursor: pointer;
+        }
+
+        .delete-response:hover {
+            opacity: 0.8;
+        }
+
+
+    </style>
+
+    <div class="container1">
+        <div class="box">
+            <form id="pollForm">
+                <h2>Pick the MVP of this Season</h2>
+                <label for="email">Your Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="team">Choose a team:</label>
+                <select id="team" name="team">
+                    <option value="Madhav">Madhav Pratick</option>
+                    <option value="Naseer">Naseer Khan</option>
+                    <option value="Vijay">Vijay Balagopala</option>
+                </select>
+                <button type="button" onclick="submitPoll()">Submit</button>
+                <button type="button" onclick="viewResponses1(); ViewDoughnut();insertBarGraphHeading();">View Responses</button>
+            </form>
+        </div>
+        <br />
+        <div class="box"><div id="responses"></div></div>
+    </div>
+
+    <canvas id="voteChart"></canvas>
+
+    <div class="container1">
+        <div class="box">
+
+            <canvas id="voteChartPie"></canvas>
+        </div>
+        <div class="box">
+
+            <canvas id="voteChartDoughnut"></canvas>
+        </div>
+    </div>
+
+
+    <script src="~/js/script.js"></script>
+
+    <div class="container">
+        <h3 class="title">What one feature or improvement would make your experience on this TPL website more engaging or enjoyable?</h3>
+        <div class="input-group">
+            <input type="text" id="opinionInput" class="input-text" placeholder="Enter your opinion here">
+            <button class="btn" onclick="addOrUpdateOpinion()">Submit Feedback</button>
+        </div>
+        <ul id="opinionsList" class="opinion-list"></ul>
+    </div>
+    <style>
+
+        .input-text {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn {
+            width: 25%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .opinion-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .opinion-list li {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .opinion-list li input[type="text"] {
+            flex-grow: 1;
+            margin-right: 10px;
+            padding: 8px;
+        }
+
+        .opinion-list li .btn {
+            padding: 8px 12px;
+            width: auto;
+        }
+
+        .opinion-list li .btn-edit, .opinion-list li .btn-delete {
+            background-color: #FFC107;
+        }
+
+        .opinion-list li .btn-delete {
+            background-color: #DC3545;
+        }
+    </style>
+    <script>
+        let opinions = [];
+        let currentlyEditingIndex = -1;
+
+        function addOrUpdateOpinion() {
+            const input = document.getElementById('opinionInput');
+            if (input.value.trim() === '') return;
+
+            if (currentlyEditingIndex === -1) {
+
+                opinions.push(input.value);
+            } else {
+
+                opinions[currentlyEditingIndex] = input.value;
+                currentlyEditingIndex = -1;
+            }
+
+            input.value = '';
+            updateOpinionsList();
+        }
+
+        function updateOpinionsList() {
+            const list = document.getElementById('opinionsList');
+            list.innerHTML = '';
+            opinions.forEach((opinion, index) => {
+                const listItem = document.createElement('li');
+                const textInput = document.createElement('input');
+                textInput.type = 'text';
+                textInput.value = opinion;
+                textInput.disabled = true;
+
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => editOpinion(index, textInput);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteOpinion(index);
+
+                listItem.appendChild(textInput);
+                listItem.appendChild(editButton);
+                listItem.appendChild(deleteButton);
+
+                list.appendChild(listItem);
+            });
+        }
+
+        function editOpinion(index, textInput) {
+            currentlyEditingIndex = index;
+            const input = document.getElementById('opinionInput');
+            input.value = opinions[index];
+            textInput.disabled = false;
+            input.focus();
+        }
+
+        function deleteOpinion(index) {
+            opinions.splice(index, 1);
+            updateOpinionsList();
+        }
+
+
+
+    </script>
+
+</main>
